@@ -11,7 +11,7 @@ git clone https://github.com/xiaoxian8/AnyKernel3.git --depth=1
 
 #合并配置文件
 ARCH=arm64 ./scripts/kconfig/merge_config.sh -m \
-	arch/arm64/configs/gki_defconfig \
+	arch/arm64/configs/vendor/pineapple_GKI.config \
     arch/arm64/configs/vendor/pineapple_consolidate.config \
     arch/arm64/configs/oem/pineapple_diff_config \
     arch/arm64/configs/oem/boards/cerro_diff_config
@@ -41,7 +41,7 @@ args=(-j$(nproc --all)
     DEPMOD=depmod
     DTC=usr/bin/dtc)
 #开始编译
-make ${args[@]} gki_defconfig
+make ${args[@]} nx721j_defconfig
 
 make ${args[@]} all
 
