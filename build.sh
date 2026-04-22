@@ -25,9 +25,13 @@ mv .config arch/arm64/configs/nx721j_defconfig
 args=(-j$(nproc --all)
     O=out
 	ARCH=arm64
+	CLANG_TRIPLE=aarch64-linux-gnu-
+	CROSS_COMPILE=aarch64-linux-gnu-
+	CROSS_COMPILE_COMPAT=arm-linux-gnueabi-
     LLVM=1
+	LLVM_IAS=1
     DEPMOD=depmod
-    DTC_EXT=usr/bin/dtc)
+    DTC=usr/bin/dtc)
 #开始编译
 make ${args[@]} nx721j_defconfig
 
