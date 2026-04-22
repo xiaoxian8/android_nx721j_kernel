@@ -1,5 +1,4 @@
 #!/bin/bash
-set -euo pipefail
 
 #克隆LLVM工具链
 git clone https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86 --depth=1 -b android14-release build-tools
