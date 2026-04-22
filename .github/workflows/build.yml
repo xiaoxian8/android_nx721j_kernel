@@ -1,0 +1,28 @@
+name: build kernel
+
+on:
+  workflow_dispatch:
+  
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 检查储存库
+        uses: actions/checkout@v4
+
+      - name: 安装依赖
+        run: |
+          sudo apt update && sudo apt-get install -y curl bison flex make binutils dwarves git lld pahole zip perl gcc python3 python-is-python3 bc libssl-dev libelf-dev device-tree-compiler kmod binutils-aarch64-linux-gnu binutils-arm-linux-gnueabi
+          
+      - name: 执行build.sh
+        run: |
+          chmod +x build.sh
+          ./build.sh
+
+      - name: 上传AnyKernel3刷机包
+        uses: actions/upload-artifact@v4
+        with:
+         name: kernel-zip
+         path: out/kernel.zip
