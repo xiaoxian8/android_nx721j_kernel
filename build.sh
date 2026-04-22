@@ -1,5 +1,6 @@
 #!/bin/bash
 set -euo pipefail
+
 #克隆LLVM工具链
 git clone https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86 --depth=1 -b android14-release build-tools
 
@@ -25,7 +26,7 @@ args=(-j$(nproc --all)
 	ARCH=arm64
     LLVM=1
     DEPMOD=depmod
-    DTC=usr/bin/dtc)
+    DTC_EXT=usr/bin/dtc)
 #开始编译
 make ${args[@]} nx721j_defconfig
 
