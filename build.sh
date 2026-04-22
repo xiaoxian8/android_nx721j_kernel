@@ -12,6 +12,7 @@ git clone https://github.com/xiaoxian8/AnyKernel3.git --depth=1
 
 #合并配置文件
 ARCH=arm64 ./scripts/kconfig/merge_config.sh -m \
+	arch/arm64/configs/gki_defconfig \
     arch/arm64/configs/vendor/pineapple_tuivm.config \
     arch/arm64/configs/vendor/pineapple_consolidate.config \
     arch/arm64/configs/oem/pineapple_diff_config \
