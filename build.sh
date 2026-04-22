@@ -27,7 +27,7 @@ args=(-j$(nproc --all)
     DEPMOD=depmod
     DTC=usr/bin/dtc)
 #开始编译
-make ${args[@]} nx721j_defconfig
+make ${args[@]} gki_defconfig
 
 make ${args[@]} all
 
