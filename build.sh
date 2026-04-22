@@ -12,7 +12,7 @@ ARCH=arm64 ./scripts/kconfig/merge_config.sh -m \
     arch/arm64/configs/oem/zlog_diff_config \
     arch/arm64/configs/oem/boards/cerro_diff_config \
 
-mv ./config arch/arm64/configs/nx721j_defconfig
+mv .config arch/arm64/configs/nx721j_defconfig
 
 args=(-j$(nproc --all)
     O=out
