@@ -37,7 +37,7 @@ args=(-j$(nproc --all)
 	HOSTAR=llvm-ar
 	HOSTLD=ld.lld
     DEPMOD=depmod
-    DTC=usr/bin/dtc)
+    DTC_EXT=usr/bin/dtc)
 #开始编译
 make ${args[@]} nx721j_defconfig
 
