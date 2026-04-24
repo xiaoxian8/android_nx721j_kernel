@@ -393,10 +393,6 @@ static void qrtr_log_rx_msg(struct qrtr_node *node, struct sk_buff *skb)
 				  cb->type, cb->src_node);
 
 		}
-		else if (cb->type == QRTR_TYPE_DEL_PROC)
-			QRTR_INFO(node->ilc,
-				  "RX CTRL: cmd:0x%x node[0x%x]\n",
-				  cb->type, le32_to_cpu(pkt.proc.node));
 	}
 }
 
