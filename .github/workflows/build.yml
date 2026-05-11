@@ -8,37 +8,52 @@ on:
         required: true
         type: choice
         options:
-          - 'KernelSU原版'
+          - 'KernelSU'
           - 'KernelSU-Next'
           - 'ReSukiSU'
+          - 'NO KernrlSU'
+        default: KernelSU-Next
+        
       SuSFS_STAT:
         description: 'SuSFS'
         required: true
         type: choice
         options:
-          - 'Y'
-          - 'N'
+          - 'YES'
+          - 'NO'
+        default: 'YES'
       SSG_IO:
         description: 'SSG IO调度'
         required: true
         type: choice
         options:
-          - 'Y'
-          - 'N'
+          - 'YES'
+          - 'NO'
+      default: 'YES'
       MFY_STAT:
         description: 'Mountify支持'
         required: true
         type: choice
         options:
-          - 'Y'
-          - 'N'
+          - 'YES'
+          - 'NO'
+        default: 'YES'
       IPS_STAT:
         description: 'Netfilter / IPSET'
         required: true
         type: choice
         options:
-          - 'Y'
-          - 'N'
+          - 'YES'
+          - 'NO'
+        default: 'YES'
+      BBR_STAT:
+        description: 'BBR 拥塞控制'
+        required: true
+        type: choice
+        options:
+          - 'YES'
+          - 'NO'
+        default: 'YES'
 
 jobs:
   build:
