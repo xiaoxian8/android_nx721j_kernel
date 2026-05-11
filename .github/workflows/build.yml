@@ -1,0 +1,61 @@
+name: Build with KernelSU
+
+on:
+  workflow_dispatch:
+    inputs:
+      KSU_BRANCH:
+        description: '请选择KernelSU分支'
+        required: true
+        type: choice
+        options:
+          - 'KernelSU原版'
+          - 'KernelSU-Next'
+          - 'ReSukiSU'
+      SuSFS_STAT:
+        description: 'SuSFS'
+        required: true
+        type: choice
+        options:
+          - 'Y'
+          - 'N'
+      SSG_IO:
+        description: 'SSG IO调度'
+        required: true
+        type: choice
+        options:
+          - 'Y'
+          - 'N'
+      MFY_STAT:
+        description: 'Mountify支持'
+        required: true
+        type: choice
+        options:
+          - 'Y'
+          - 'N'
+      IPS_STAT:
+        description: 'Netfilter / IPSET'
+        required: true
+        type: choice
+        options:
+          - 'Y'
+          - 'N'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: configure
+      run: ./configure
+
+    - name: Install dependencies
+      run: make
+
+    - name: Run check
+      run: make check
+
+    - name: Run distcheck
+      run: make distcheck
