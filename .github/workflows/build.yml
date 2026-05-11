@@ -29,7 +29,7 @@ on:
         options:
           - 'YES'
           - 'NO'
-      default: 'YES'
+        default: 'YES'
       MFY_STAT:
         description: 'Mountify支持'
         required: true
