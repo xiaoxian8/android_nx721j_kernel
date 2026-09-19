@@ -108,7 +108,7 @@ export KBUILD_BUILD_VERSION=1
 if [ ! -d "${HOME}/android_kernel/build-tools/llvm22" ]; then
 	wget -q -P ${HOME}/ https://github.com/llvm/llvm-project/releases/download/llvmorg-22.1.8/LLVM-22.1.8-Linux-X64.tar.xz
 	tar -xf ${HOME}/LLVM-22.1.8-Linux-X64.tar.xz -C ${HOME}
-	mv ${HOME}/LLVM-22.1.8-Linux-x64 ${HOME}/android_kernel/build-tools/llvm22
+	mv ${HOME}/LLVM-22.1.8-Linux-X64 ${HOME}/android_kernel/build-tools/llvm22
 fi
 [ ! -d "${HOME}/android_kernel/AnyKernel3" ] && git clone https://github.com/WildKernels/AnyKernel3.git --depth=1 ${HOME}/android_kernel/AnyKernel3
 
