@@ -1,0 +1,144 @@
+name: Build Nubia Z60 Ultra Kernel
+
+on:
+  workflow_dispatch:
+    inputs:
+      kernelsu_tag:
+        description: 'KernelSU 管理器 (1=KernelSU, 2=KernelSU-Next, 3=SukiSU Ultra, 4=ReSukiSU)'
+        required: true
+        default: '3'
+        type: choice
+        options:
+          - '1'
+          - '2'
+          - '3'
+          - '4'
+      susfs:
+        description: '启用 susfs4ksu (y/n)'
+        required: true
+        default: 'y'
+        type: choice
+        options: ['y', 'n']
+      netfilter:
+        description: 'Netfilter/IPSET 支持 (y/n)'
+        required: true
+        default: 'y'
+        type: choice
+        options: ['y', 'n']
+      bbr:
+        description: 'TCP 拥塞控制算法 BBR (y/n)'
+        required: true
+        default: 'y'
+        type: choice
+        options: ['y', 'n']
+      mountify:
+        description: 'Mountify 支持 (y/n)'
+        required: true
+        default: 'y'
+        type: choice
+        options: ['y', 'n']
+      droidspaces:
+        description: 'Droidspaces 支持 (y/n)'
+        required: true
+        default: 'y'
+        type: choice
+        options: ['y', 'n']
+      ssg:
+        description: 'SSG IO 调度 (y/n)'
+        required: true
+        default: 'y'
+        type: choice
+        options: ['y', 'n']
+      bbg:
+        description: 'BBG 基带守护 (y/n)'
+        required: true
+        default: 'y'
+        type: choice
+        options: ['y', 'n']
+  push:
+    branches:
+      - main
+      - master
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build Kernel
+    runs-on: ubuntu-22.04
+    timeout-minutes: 360
+
+    steps:
+      - name: Checkout (build.sh 所在仓库)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: 释放磁盘空间
+        run: |
+          echo "清理前:"
+          df -h /
+          sudo rm -rf /usr/share/dotnet \
+                      /usr/local/lib/android \
+                      /opt/ghc \
+                      /opt/hostedtoolcache/CodeQL \
+                      /usr/local/share/boost \
+                      "$AGENT_TOOLSDIRECTORY" || true
+          sudo apt-get clean
+          echo "清理后:"
+          df -h /
+
+      - name: 安装依赖
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            bc bison build-essential ccache cpio curl flex git \
+            device-tree-compiler kmod libelf-dev libssl-dev \
+            patch python3 rsync unzip wget zip
+
+      - name: 显示环境信息
+        run: |
+          echo "HOME=$HOME"
+          echo "PWD=$PWD"
+          nproc --all
+          free -h
+          df -h
+
+      - name: 编译内核
+        env:
+          KERNELSU_TAG_IN: ${{ inputs.kernelsu_tag || '3' }}
+          SUSFS_IN:        ${{ inputs.susfs        || 'y' }}
+          NET_IN:          ${{ inputs.netfilter    || 'y' }}
+          BBR_IN:          ${{ inputs.bbr          || 'y' }}
+          MFY_IN:          ${{ inputs.mountify     || 'y' }}
+          DS_IN:           ${{ inputs.droidspaces  || 'y' }}
+          SSG_IN:          ${{ inputs.ssg          || 'y' }}
+          BBG_IN:          ${{ inputs.bbg          || 'y' }}
+        run: |
+          chmod +x build.sh
+          # 按 build.sh 里 read -p 的顺序喂入答案
+          printf '%s\n' \
+            "${KERNELSU_TAG_IN}" \
+            "${SUSFS_IN}" \
+            "${NET_IN}" \
+            "${BBR_IN}" \
+            "${MFY_IN}" \
+            "${DS_IN}" \
+            "${SSG_IN}" \
+            "${BBG_IN}" \
+          | bash build.sh
+
+      - name: 列出产物
+        if: always()
+        run: |
+          echo "输出目录内容:"
+          ls -lh "$HOME/android_kernel/nx721j_out/" || true
+
+      - name: 上传 AnyKernel3 刷机包
+        uses: actions/upload-artifact@v4
+        with:
+          name: AnyKernel3-${{ github.run_number }}
+          path: /home/runner/android_kernel/nx721j_out/*.zip
+          if-no-files-found: error
+          retention-days: 30
