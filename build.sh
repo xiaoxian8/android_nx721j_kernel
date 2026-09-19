@@ -110,7 +110,7 @@ if [ ! -d "${HOME}/android_kernel/build-tools/llvm22" ]; then
 	tar -xf ${HOME}/LLVM-22.1.8-Linux-X64.tar.xz -C ${HOME}
 	mv ${HOME}/LLVM-22.1.8-Linux-x64 ${HOME}/android_kernel/build-tools/llvm22
 fi
-[ ! -d "${HOME}/android_kernel/AnyKernel3" ] && git clone https://github.com/Kernel-SU/AnyKernel3.git --depth=1 ${HOME}/android_kernel/AnyKernel3
+[ ! -d "${HOME}/android_kernel/AnyKernel3" ] && git clone https://github.com/WildKernels/AnyKernel3.git --depth=1 ${HOME}/android_kernel/AnyKernel3
 
 #恢复默认仓NEL_DIR}/
 cd ${KERNEL_DIR}
