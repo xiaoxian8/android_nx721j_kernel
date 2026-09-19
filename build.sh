@@ -121,6 +121,9 @@ rm -rf ${KERNEL_DIR}/KernelSU-Next
 find . -name "*.rej" -delete
 find . -name "*.orig" -delete
 
+#CVE-2026-43499修复补丁
+patch -p1 -d ${KERNEL_DIR} < ${KERNEL_DIR}/fix_CVE-2026-43499.patch
+
 #合并配置
 ./scripts/kconfig/merge_config.sh -m \
 	arch/arm64/configs/gki_defconfig \
