@@ -106,12 +106,9 @@ export KBUILD_BUILD_VERSION=1
 [ ! -d "${KERNEL_DIR}" ] && git clone https://github.com/xiaoxian8/android_nx721j_kernel.git -b myos14.5 --depth=1 ${KERNEL_DIR}
 [ ! -d "${HOME}/android_kernel/build-tools" ] && mkdir ${HOME}/android_kernel/build-tools
 if [ ! -d "${HOME}/android_kernel/build-tools/llvm22" ]; then
-	wget -P ${HOME}/ https://github.com/llvm/llvm-project/releases/download/llvmorg-22.1.8/LLVM-22.1.8-Linux-X64.tar.xz
+	wget -q ${HOME}/ https://github.com/llvm/llvm-project/releases/download/llvmorg-22.1.8/LLVM-22.1.8-Linux-X64.tar.xz
 	tar -xvf ${HOME}/LLVM-22.1.8-Linux-X64.tar.xz -C ${HOME}
 	mv ${HOME}/LLVM-22.1.8-Linux-x64 ${HOME}/android_kernel/build-tools/llvm22
-fi
-if [ ! -d "${HOME}/android_kernel/build-tools/llvm17" ]; then
-	git clone https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86 -b android14-release --depth=1 ${HOME}/android_kernel/build-tools/linux-x86
 fi
 [ ! -d "${HOME}/android_kernel/AnyKernel3" ] && git clone https://github.com/Kernel-SU/AnyKernel3.git --depth=1 ${HOME}/android_kernel/AnyKernel3
 
