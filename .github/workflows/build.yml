@@ -4,15 +4,11 @@ on:
   workflow_dispatch:
     inputs:
       kernelsu_tag:
-        description: 'KernelSU 管理器 (1=KernelSU, 2=KernelSU-Next, 3=SukiSU Ultra, 4=ReSukiSU)'
+        description: 'KernelSU 管理器 (1=KernelSU 2=KernelSU-Next 3=SukiSU 4=ReSukiSU)'
         required: true
         default: '3'
         type: choice
-        options:
-          - '1'
-          - '2'
-          - '3'
-          - '4'
+        options: ['1', '2', '3', '4']
       susfs:
         description: '启用 susfs4ksu (y/n)'
         required: true
@@ -20,13 +16,13 @@ on:
         type: choice
         options: ['y', 'n']
       netfilter:
-        description: 'Netfilter/IPSET 支持 (y/n)'
+        description: 'Netfilter/IPSET (y/n)'
         required: true
         default: 'y'
         type: choice
         options: ['y', 'n']
       bbr:
-        description: 'TCP 拥塞控制算法 BBR (y/n)'
+        description: 'BBR 拥塞控制 (y/n)'
         required: true
         default: 'y'
         type: choice
@@ -56,9 +52,10 @@ on:
         type: choice
         options: ['y', 'n']
   push:
-    branches:
-      - main
-      - master
+    branches: [main, master]
+    paths-ignore:
+      - '**/*.md'
+      - '.github/**'
 
 permissions:
   contents: read
@@ -70,24 +67,28 @@ jobs:
     timeout-minutes: 360
 
     steps:
-      - name: Checkout (build.sh 所在仓库)
+      - name: Checkout 内核源码
         uses: actions/checkout@v4
         with:
-          fetch-depth: 1
+          fetch-depth: 1          # 只留当前 commit，省磁盘
+
+      # 关键：把源码挪到脚本期望的路径，让它跳过 git clone
+      - name: 把源码放到脚本期望的位置
+        run: |
+          mkdir -p $HOME/android_kernel
+          mv "$GITHUB_WORKSPACE" $HOME/android_kernel/android_nx721j_kernel
+          cd $HOME/android_kernel/android_nx721j_kernel
+          git status --short | head
+          git log -1 --oneline
 
       - name: 释放磁盘空间
         run: |
-          echo "清理前:"
-          df -h /
-          sudo rm -rf /usr/share/dotnet \
-                      /usr/local/lib/android \
-                      /opt/ghc \
-                      /opt/hostedtoolcache/CodeQL \
-                      /usr/local/share/boost \
+          echo "=== Before ==="; df -h /
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc \
+                      /opt/hostedtoolcache/CodeQL /usr/local/share/boost \
                       "$AGENT_TOOLSDIRECTORY" || true
           sudo apt-get clean
-          echo "清理后:"
-          df -h /
+          echo "=== After ==="; df -h /
 
       - name: 安装依赖
         run: |
@@ -97,13 +98,13 @@ jobs:
             device-tree-compiler kmod libelf-dev libssl-dev \
             patch python3 rsync unzip wget zip
 
-      - name: 显示环境信息
+      - name: 环境信息
         run: |
           echo "HOME=$HOME"
-          echo "PWD=$PWD"
           nproc --all
           free -h
           df -h
+          which dtc && dtc --version || true
 
       - name: 编译内核
         env:
@@ -116,8 +117,9 @@ jobs:
           SSG_IN:          ${{ inputs.ssg          || 'y' }}
           BBG_IN:          ${{ inputs.bbg          || 'y' }}
         run: |
+          cd $HOME/android_kernel/android_nx721j_kernel
           chmod +x build.sh
-          # 按 build.sh 里 read -p 的顺序喂入答案
+          # 按 read -p 出现的顺序依次喂入答案
           printf '%s\n' \
             "${KERNELSU_TAG_IN}" \
             "${SUSFS_IN}" \
@@ -132,13 +134,12 @@ jobs:
       - name: 列出产物
         if: always()
         run: |
-          echo "输出目录内容:"
-          ls -lh "$HOME/android_kernel/nx721j_out/" || true
+          ls -lh $HOME/android_kernel/nx721j_out/ 2>/dev/null || echo "无输出目录"
 
       - name: 上传 AnyKernel3 刷机包
         uses: actions/upload-artifact@v4
         with:
-          name: AnyKernel3-${{ github.run_number }}
+          name: AnyKernel3-run${{ github.run_number }}
           path: /home/runner/android_kernel/nx721j_out/*.zip
           if-no-files-found: error
           retention-days: 30
