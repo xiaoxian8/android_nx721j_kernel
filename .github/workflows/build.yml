@@ -6,7 +6,7 @@ on:
       kernelsu_tag:
         description: 'KernelSU 管理器 (1=KernelSU 2=KernelSU-Next 3=SukiSU 4=ReSukiSU)'
         required: true
-        default: '3'
+        default: '2'
         type: choice
         options: ['1', '2', '3', '4']
       susfs:
@@ -42,13 +42,13 @@ on:
       ssg:
         description: 'SSG IO 调度 (y/n)'
         required: true
-        default: 'y'
+        default: 'n'
         type: choice
         options: ['y', 'n']
       bbg:
         description: 'BBG 基带守护 (y/n)'
         required: true
-        default: 'y'
+        default: 'n'
         type: choice
         options: ['y', 'n']
   push:
