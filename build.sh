@@ -86,7 +86,7 @@ read -p "SSG IO调度 (y/n): " SSG_STAT
 read -p "BBG基带守护 (y/n): " BBG_STAT
 
 # 环境变量的
-export PATH=${HOME}/android_kernel/build-tools/llvm22/bin:${PATH} #llvm工具链
+export PATH=${HOME}/android_kernel/build-tools/llvm/bin:${PATH} #llvm工具链
 export KERNEL_DIR=${HOME}/android_kernel/android_nx721j_kernel #内核源码文件夹
 export OUT_DIR=${HOME}/android_kernel/nx721j_out #编译输出文件夹
 export MODULES_OUT=${HOME}/android_kernel/nx721j_modules_out #模块输出文件夹
@@ -106,9 +106,9 @@ export KBUILD_BUILD_VERSION=1
 [ ! -d "${KERNEL_DIR}" ] && git clone https://github.com/xiaoxian8/android_nx721j_kernel.git -b myos14.5 --depth=1 ${KERNEL_DIR}
 [ ! -d "${HOME}/android_kernel/build-tools" ] && mkdir ${HOME}/android_kernel/build-tools
 if [ ! -d "${HOME}/android_kernel/build-tools/llvm22" ]; then
-	wget -q -P ${HOME}/ https://github.com/llvm/llvm-project/releases/download/llvmorg-22.1.8/LLVM-22.1.8-Linux-X64.tar.xz
-	tar -xf ${HOME}/LLVM-22.1.8-Linux-X64.tar.xz -C ${HOME}
-	mv ${HOME}/LLVM-22.1.8-Linux-X64 ${HOME}/android_kernel/build-tools/llvm22
+	wget -q -P ${HOME}/ https://github.com/llvm/llvm-project/releases/download/llvmorg-23.1.2/LLVM-23.1.2-Linux-X64.tar.xz
+	tar -xf ${HOME}/LLVM-23.1.2-Linux-X64.tar.xz -C ${HOME}
+	mv ${HOME}/LLVM-23.1.2-Linux-X64 ${HOME}/android_kernel/build-tools/llvm
 fi
 [ ! -d "${HOME}/android_kernel/AnyKernel3" ] && git clone https://github.com/WildKernels/AnyKernel3.git --depth=1 ${HOME}/android_kernel/AnyKernel3
 
