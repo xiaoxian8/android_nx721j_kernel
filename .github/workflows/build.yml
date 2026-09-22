@@ -8,7 +8,7 @@ on:
         required: true
         default: '2'
         type: choice
-        options: ['1', '2', '3', '4']
+        options: ['1', '2', '3', '4','No KernelSU']
       susfs:
         description: '启用 susfs4ksu (y/n)'
         required: true
