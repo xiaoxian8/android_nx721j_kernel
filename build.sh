@@ -106,9 +106,9 @@ export KBUILD_BUILD_VERSION=1
 [ ! -d "${KERNEL_DIR}" ] && git clone https://github.com/xiaoxian8/android_nx721j_kernel.git -b myos14.5 --depth=1 ${KERNEL_DIR}
 [ ! -d "${HOME}/android_kernel/build-tools" ] && mkdir ${HOME}/android_kernel/build-tools
 if [ ! -d "${HOME}/android_kernel/build-tools/llvm" ]; then
-	wget -q -P ${HOME}/ https://github.com/llvm/llvm-project/releases/download/llvmorg-23.1.2/LLVM-23.1.2-Linux-X64.tar.xz
-	tar -xf ${HOME}/LLVM-23.1.2-Linux-X64.tar.xz -C ${HOME}
-	mv ${HOME}/LLVM-23.1.2-Linux-X64 ${HOME}/android_kernel/build-tools/llvm
+	wget -q -P ${HOME}/ https://github.com/llvm/llvm-project/releases/download/llvmorg-23.1.4/LLVM-23.1.4-Linux-X64.tar.xz
+	tar -xf ${HOME}/LLVM-23.1.4-Linux-X64.tar.xz -C ${HOME}
+	mv ${HOME}/LLVM-23.1.4-Linux-X64 ${HOME}/android_kernel/build-tools/llvm
 fi
 [ ! -d "${HOME}/android_kernel/AnyKernel3" ] && git clone https://github.com/WildKernels/AnyKernel3.git --depth=1 ${HOME}/android_kernel/AnyKernel3
 
