@@ -40,12 +40,14 @@ susfs_patch() {
 	cp -r ${HOME}/android_kernel/susfs4ksu/kernel_patches/fs ${KERNEL_DIR}
 	cp -r ${HOME}/android_kernel/susfs4ksu/kernel_patches/include ${KERNEL_DIR}
 	patch -p1 -F3 -d ${KERNEL_DIR} < ${HOME}/android_kernel/susfs4ksu/kernel_patches/50_add_susfs_in_gki-android14-6.1.patch
+	patch -p1 -F3 -d ${KERNEL_DIR} < ${KERNEL_DIR}/fix_susfs.patch
 }
 # 为内核打入KernelSU-Next专有SuSFS补丁
 next_susfs_patch() {
 	cp -r ${HOME}/android_kernel/ps_susfs4ksu/kernel_patches/fs ${KERNEL_DIR}
 	cp -r ${HOME}/android_kernel/ps_susfs4ksu/kernel_patches/include ${KERNEL_DIR}
 	patch -p1 -F3 -d ${KERNEL_DIR} < ${HOME}/android_kernel/ps_susfs4ksu/kernel_patches/50_add_susfs_in_gki-android14-6.1.patch
+	patch -p1 -F3 -d ${KERNEL_DIR} < ${KERNEL_DIR}/fix_susfs.patch
 }
 # 下载更新SuSFS补丁
 update_susfs() {
