@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       kernelsu_tag:
-        description: 'KernelSU 管理器 (1=KernelSU 2=KernelSU-Next 3=SukiSU 4=ReSukiSU)'
+        description: 'KernelSU 管理器 (1=KernelSU 2=KernelSU-Next 3=SukiSU 4=BaKaSU)'
         required: true
         default: '2'
         type: choice
