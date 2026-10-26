@@ -29,10 +29,10 @@ sukisu_ultra() {
 	fi
 	KSU_BRANCH="-SukiSU_Ultra"
 }
-# ResukiSU
-resukisu() {
-	curl -LSs "https://raw.githubusercontent.com/ReSukiSU/ReSukiSU/main/kernel/setup.sh" | bash
-	KSU_BRANCH="-ReSukiSU"
+# BaKaSU
+bakasu() {
+	curl -LSs "https://raw.githubusercontent.com/Baka-SU/BakaSU/main/kernel/setup.sh" | bash
+	KSU_BRANCH="-BaKsSU"
 }
 
 # 为内核打入SuSFS补丁
@@ -74,7 +74,7 @@ echo "###############################
 # 1.KernelSU原版
 # 2.KernelSU-Next
 # 3.SukiSU Ultra
-# 4.ReSukiSU
+# 4.BaKaSU
 ###############################"
 read -p "请选择你的KernelSU管理器(填数字)：" KERNELSU_TAG
 read -p "是否启用susfs4ks(y/n)：" SUSFS_STAT
@@ -142,7 +142,7 @@ case ${KERNELSU_TAG} in
 		cd ${KERNEL_DIR}
 		[[ "${KERNELSU_TAG}" == "1" ]] && kernelsu_office
 		[[ "${KERNELSU_TAG}" == "3" ]] && sukisu_ultra
-		[[ "${KERNELSU_TAG}" == "4" ]] && resukisu
+		[[ "${KERNELSU_TAG}" == "4" ]] && bakasu
 		;;
 	2)
 		[[ "${SUSFS_STAT}" =~ ^[yY]$ ]] && update_nextsusfs && next_susfs_patch
