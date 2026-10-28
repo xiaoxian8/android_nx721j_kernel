@@ -57,7 +57,7 @@ update_susfs() {
 		git reset --hard origin/gki-android14-6.1-dev
 		git pull
 	else
-		git clone https://gitlab.com/pershoot/susfs4ksu.git -b gki-android14-6.1-dev --depth=1 ${HOME}/android_kernel/susfs4ksu
+		git clone https://gitlab.com/simonpunk/susfs4ksu.git -b gki-android14-6.1-dev --depth=1 ${HOME}/android_kernel/susfs4ksu
 	fi
 }
 # 下载更新KernelSU-Next专有SuSFS补丁
