@@ -44,7 +44,7 @@ sukisu_ultra() {
 # BaKaSU
 bakasu() {
 	curl -LSs "https://raw.githubusercontent.com/Baka-SU/BakaSU/main/kernel/setup.sh" | bash
-	KSU_BRANCH="-BaKsSU"
+	KSU_BRANCH="-BaKaSU"
 }
 
 # 为内核打入SuSFS补丁
