@@ -315,8 +315,11 @@ ${KERNEL_DIR}/scripts/config --file ${OUT_DIR}/.config \
 make ${args} olddefconfig
 
 # 编译内核
-make ${args} KCFLAGS="-Wno-implicit-fallthrough -Wno-unused-but-set-variable -Wno-unused-variable" Image
-
+if [[ "${KERNELSU_TAG}" == "3" ]]; then
+    make ${args} KCFLAGS="-Wno-implicit-fallthrough -Wno-unused-but-set-variable -Wno-unused-variable" Image
+else
+    make ${args} Image
+fi
 :<<EOF
 #重新设置环境变量
 unset PATH
