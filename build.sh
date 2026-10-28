@@ -315,7 +315,7 @@ ${KERNEL_DIR}/scripts/config --file ${OUT_DIR}/.config \
 make ${args} olddefconfig
 
 # 编译内核
-make ${args} Image
+make ${args} KCFLAGS="-Wno-implicit-fallthrough -Wno-unused-but-set-variable -Wno-unused-variable" Image
 
 :<<EOF
 #重新设置环境变量
