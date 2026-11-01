@@ -41,17 +41,6 @@ susfs_patch() {
 	patch -p1 -F3 -d ${KERNEL_DIR} < ${HOME}/android_kernel/susfs4ksu/kernel_patches/50_add_susfs_in_gki-android14-6.1.patch
 	patch -p1 -d ${KERNEL_DIR} < ${KERNEL_DIR}/fix_susfs.patch
 }
-# 下载更新SuSFS补丁
-update_susfs() {
-	if [ -d "${HOME}/android_kernel/susfs4ksu/.git" ]; then
-		cd ${HOME}/android_kernel/susfs4ksu
-		git fetch --all
-		git reset --hard origin/gki-android14-6.1-dev
-		git pull
-	else
-		git clone https://gitlab.com/simonpunk/susfs4ksu.git -b gki-android14-6.1-dev --depth=1 ${HOME}/android_kernel/susfs4ksu
-	fi
-}
 # 为内核打入KernelSU-Next专有SuSFS补丁
 next_susfs_patch() {
 	cp -r ${HOME}/android_kernel/ps_susfs4ksu/kernel_patches/fs ${KERNEL_DIR}
@@ -66,7 +55,19 @@ update_susfs() {
 		git reset --hard origin/gki-android14-6.1-dev
 		git pull
 	else
-		git clone https://gitlab.com/pershoot/susfs4ksu.git -b gki-android14-6.1-dev --depth=1 ${HOME}/android_kernel/susfs4ksu
+		git clone https://gitlab.com/simonpunk/susfs4ksu.git -b gki-android14-6.1-dev --depth=1 ${HOME}/android_kernel/susfs4ksu
+	fi
+}
+
+# 下载更新SuSFS补丁
+update_nextsusfs() {
+	if [ -d "${HOME}/android_kernel/ps_susfs4ksu/.git" ]; then
+		cd ${HOME}/android_kernel/ps_susfs4ksu
+		git fetch --all
+		git reset --hard origin/gki-android14-6.1-dev
+		git pull
+	else
+		git clone https://gitlab.com/pershoot/susfs4ksu/ -b gki-android14-6.1-dev --depth=1 ${HOME}/android_kernel/ps_susfs4ksu
 	fi
 }
 
@@ -145,7 +146,7 @@ case ${KERNELSU_TAG} in
 		[[ "${KERNELSU_TAG}" == "4" ]] && bakasu
 		;;
 		2)
-		[[ "${SUSFS_STAT}" =~ ^[yY]$ ]] && update_susfs && next_susfs_patch
+		[[ "${SUSFS_STAT}" =~ ^[yY]$ ]] && update_nextsusfs && next_susfs_patch
 		cd ${KERNEL_DIR}
 		kernelsu_next
 		;;
