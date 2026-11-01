@@ -14,19 +14,7 @@ kernelsu_office() {
 # kernelSU-Next
 kernelsu_next() {
 	if [[ "${SUSFS_STAT}" =~ ^[yY]$ ]]; then
-		curl -LSs "https://raw.githubusercontent.com/KernelSU-Next/KernelSU-Next/next/kernel/setup.sh" | bash -s dev
-		git clone https://github.com/WildKernels/kernel_patches.git --depth=1 ${HOME}/android_kernel/kernel_patches
-		patch -p1 -d ${KERNEL_DIR}/KernelSU-Next < ${HOME}/android_kernel/susfs4ksu/kernel_patches/KernelSU/10_enable_susfs_for_ksu.patch
-		patch -p1 -d ${KERNEL_DIR}/KernelSU-Next < ${HOME}/android_kernel/kernel_patches/next/susfs_fix_patches/v2.3.0/fix_Kbuild.patch
-		patch -p1 -d ${KERNEL_DIR}/KernelSU-Next < ${HOME}/android_kernel/kernel_patches/next/susfs_fix_patches/v2.3.0/fix_dispatch.c.patch
-		patch -p1 -d ${KERNEL_DIR}/KernelSU-Next < ${HOME}/android_kernel/kernel_patches/next/susfs_fix_patches/v2.3.0/fix_init.c.patch
-		patch -p1 -d ${KERNEL_DIR}/KernelSU-Next < ${HOME}/android_kernel/kernel_patches/next/susfs_fix_patches/v2.3.0/fix_kernel_umount.c.patch
-		patch -p1 -d ${KERNEL_DIR}/KernelSU-Next < ${HOME}/android_kernel/kernel_patches/next/susfs_fix_patches/v2.3.0/fix_selinux_hide.c.patch
-		patch -p1 -d ${KERNEL_DIR}/KernelSU-Next < ${HOME}/android_kernel/kernel_patches/next/susfs_fix_patches/v2.3.0/fix_setuid_hook.c.patch
-		patch -p1 -d ${KERNEL_DIR}/KernelSU-Next < ${HOME}/android_kernel/kernel_patches/next/susfs_fix_patches/v2.3.0/fix_sucompat.c.patch
-		patch -p1 -d ${KERNEL_DIR}/KernelSU-Next < ${HOME}/android_kernel/kernel_patches/next/susfs_fix_patches/v2.3.0/fix_supercall.c.patch
-		patch -p1 -d ${KERNEL_DIR}/KernelSU-Next < ${HOME}/android_kernel/kernel_patches/next/susfs_fix_patches/v2.3.0/ksu_toolkit.patch
-		patch -p1 -d ${KERNEL_DIR}/KernelSU-Next < ${HOME}/android_kernel/kernel_patches/next/susfs_fix_patches/v2.3.0/overwrite_hook_mode.patch
+	    curl -LSs "https://raw.githubusercontent.com/pershoot/KernelSU-Next/dev-susfs/kernel/setup.sh" | bash -s dev-susfs
 	else
 		curl -LSs "https://raw.githubusercontent.com/KernelSU-Next/KernelSU-Next/next/kernel/setup.sh" | bash -s dev
 	fi
@@ -46,7 +34,6 @@ bakasu() {
 	curl -LSs "https://raw.githubusercontent.com/Baka-SU/BakaSU/main/kernel/setup.sh" | bash
 	KSU_BRANCH="-BaKaSU"
 }
-
 # 为内核打入SuSFS补丁
 susfs_patch() {
 	cp -r ${HOME}/android_kernel/susfs4ksu/kernel_patches/fs ${KERNEL_DIR}
@@ -63,6 +50,23 @@ update_susfs() {
 		git pull
 	else
 		git clone https://gitlab.com/simonpunk/susfs4ksu.git -b gki-android14-6.1-dev --depth=1 ${HOME}/android_kernel/susfs4ksu
+	fi
+}
+# 为内核打入KernelSU-Next专有SuSFS补丁
+next_susfs_patch() {
+	cp -r ${HOME}/android_kernel/ps_susfs4ksu/kernel_patches/fs ${KERNEL_DIR}
+	cp -r ${HOME}/android_kernel/ps_susfs4ksu/kernel_patches/include ${KERNEL_DIR}
+	patch -p1 -F3 -d ${KERNEL_DIR} < ${HOME}/android_kernel/ps_susfs4ksu/kernel_patches/50_add_susfs_in_gki-android14-6.1.patch
+}
+# 下载更新SuSFS补丁
+update_susfs() {
+	if [ -d "${HOME}/android_kernel/susfs4ksu/.git" ]; then
+		cd ${HOME}/android_kernel/susfs4ksu
+		git fetch --all
+		git reset --hard origin/gki-android14-6.1-dev
+		git pull
+	else
+		git clone https://gitlab.com/pershoot/susfs4ksu.git -b gki-android14-6.1-dev --depth=1 ${HOME}/android_kernel/susfs4ksu
 	fi
 }
 
@@ -133,13 +137,17 @@ sed -i 's/ -dirty//g' "${KERNEL_DIR}/scripts/setlocalversion"
 
 # 判断并加入KernelSU和SuSFS
 case ${KERNELSU_TAG} in
-	1|2|3|4)
+	1|3|4)
 		[[ "${SUSFS_STAT}" =~ ^[yY]$ ]] && update_susfs && susfs_patch
 		cd ${KERNEL_DIR}
 		[[ "${KERNELSU_TAG}" == "1" ]] && kernelsu_office
-		[[ "${KERNELSU_TAG}" == "2" ]] && kernelsu_next
 		[[ "${KERNELSU_TAG}" == "3" ]] && sukisu_ultra
 		[[ "${KERNELSU_TAG}" == "4" ]] && bakasu
+		;;
+		2)
+		[[ "${SUSFS_STAT}" =~ ^[yY]$ ]] && update_nextsusfs && next_susfs_patch
+		cd ${KERNEL_DIR}
+		kernelsu_next
 		;;
 esac
 
