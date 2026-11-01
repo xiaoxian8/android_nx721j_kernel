@@ -145,7 +145,7 @@ case ${KERNELSU_TAG} in
 		[[ "${KERNELSU_TAG}" == "4" ]] && bakasu
 		;;
 		2)
-		[[ "${SUSFS_STAT}" =~ ^[yY]$ ]] && update_nextsusfs && next_susfs_patch
+		[[ "${SUSFS_STAT}" =~ ^[yY]$ ]] && update_susfs && next_susfs_patch
 		cd ${KERNEL_DIR}
 		kernelsu_next
 		;;
