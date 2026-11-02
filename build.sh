@@ -344,7 +344,7 @@ ${KERNEL_DIR}/scripts/config --file ${OUT_DIR}/.config \
 make ${args} olddefconfig
 
 # 编译内核
-if [[ "${KERNELSU_TAG}" == "3" ]]; then
+if [[ "${KERNELSU_TAG}" =~ ^[34]$ ]]]]; then
     make ${args} KCFLAGS="-Wno-implicit-fallthrough -Wno-unused-but-set-variable -Wno-unused-variable" Image
 else
     make ${args} Image
@@ -360,7 +360,7 @@ mod_args="-j$(nproc --all) \
 	ARCH=arm64 \
 	LLVM=1 \
 	DEPMOD=depmod \
-        DTC=/usr/bin/dtc"
+    DTC=/usr/bin/dtc"
 
 make ${mod_args} nx721j_defconfig
 
