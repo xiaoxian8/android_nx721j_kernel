@@ -163,11 +163,13 @@ case ${KERNELSU_TAG} in
 		2)
 		[[ "${SUSFS_STAT}" =~ ^[yY]$ ]] && update_next_susfs && next_susfs_patch
 		cd ${KERNEL_DIR}
-		kernelsu_next
+		[[ "${KERNELSU_TAG}" == "1" ]] && kernelsu_next
 		;;
 		3|4)
 		[[ "${SUSFS_STAT}" =~ ^[yY]$ ]] && update_sukisu_susfs && sukisu_susfs_patch
-		;;
+		cd ${KERNEL_DIR}
+		[[ "${KERNELSU_TAG}" == "3" ]] && sukisu_ultra
+		[[ "${KERNELSU_TAG}" == "4" ]] && bakasu
 esac
 
 # 获取KernelSU版本以及加入SuSF默认配置
