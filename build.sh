@@ -167,6 +167,7 @@ case ${KERNELSU_TAG} in
 		;;
 		3|4)
 		[[ "${SUSFS_STAT}" =~ ^[yY]$ ]] && update_sukisu_susfs && sukisu_susfs_patch
+		;;
 esac
 
 # 获取KernelSU版本以及加入SuSF默认配置
