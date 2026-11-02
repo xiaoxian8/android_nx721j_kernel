@@ -45,14 +45,14 @@ susfs_patch() {
 next_susfs_patch() {
 	cp -r ${HOME}/android_kernel/next_susfs4ksu/kernel_patches/fs ${KERNEL_DIR}
 	cp -r ${HOME}/android_kernel/next_susfs4ksu/kernel_patches/include ${KERNEL_DIR}
-	patch -p1 -F3 -d ${KERNEL_DIR} < ${HOME}/android_kernel/ps_susfs4ksu/kernel_patches/50_add_susfs_in_gki-android14-6.1.patch
+	patch -p1 -F3 -d ${KERNEL_DIR} < ${HOME}/android_kernel/next_susfs4ksu/kernel_patches/50_add_susfs_in_gki-android14-6.1.patch
 	patch -p1 -d ${KERNEL_DIR} < ${KERNEL_DIR}/fix_susfs.patch
 }
 # 为内核打入sukisu与bakasu专有SuSFS补丁
 sukisu_susfs_patch() {
 	cp -r ${HOME}/android_kernel/sk_susfs4ksu/kernel_patches/fs ${KERNEL_DIR}
 	cp -r ${HOME}/android_kernel/sk_susfs4ksu/kernel_patches/include ${KERNEL_DIR}
-	patch -p1 -F3 -d ${KERNEL_DIR} < ${HOME}/android_kernel/ps_susfs4ksu/kernel_patches/50_add_susfs_in_gki-android14-6.1.patch
+	patch -p1 -F3 -d ${KERNEL_DIR} < ${HOME}/android_kernel/sk_susfs4ksu/kernel_patches/50_add_susfs_in_gki-android14-6.1.patch
 	patch -p1 -d ${KERNEL_DIR} < ${KERNEL_DIR}/fix_susfs.patch
 }
 # 下载更新SuSFS补丁
@@ -67,7 +67,7 @@ update_susfs() {
 	fi
 }
 # 下载更新netx SuSFS补丁
-update_nextsusfs() {
+update_next_susfs() {
 	if [ -d "${HOME}/android_kernel/next_susfs4ksu/.git" ]; then
 		cd ${HOME}/android_kernel/next_susfs4ksu
 		git fetch --all
@@ -159,11 +159,9 @@ case ${KERNELSU_TAG} in
 		[[ "${SUSFS_STAT}" =~ ^[yY]$ ]] && update_susfs && susfs_patch
 		cd ${KERNEL_DIR}
 		[[ "${KERNELSU_TAG}" == "1" ]] && kernelsu_office
-		[[ "${KERNELSU_TAG}" == "3" ]] && sukisu_ultra
-		[[ "${KERNELSU_TAG}" == "4" ]] && bakasu
 		;;
 		2)
-		[[ "${SUSFS_STAT}" =~ ^[yY]$ ]] && update_nextsusfs && next_susfs_patch
+		[[ "${SUSFS_STAT}" =~ ^[yY]$ ]] && update_next_susfs && next_susfs_patch
 		cd ${KERNEL_DIR}
 		kernelsu_next
 		;;
