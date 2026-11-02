@@ -43,8 +43,15 @@ susfs_patch() {
 }
 # 为内核打入KernelSU-Next专有SuSFS补丁
 next_susfs_patch() {
-	cp -r ${HOME}/android_kernel/ps_susfs4ksu/kernel_patches/fs ${KERNEL_DIR}
-	cp -r ${HOME}/android_kernel/ps_susfs4ksu/kernel_patches/include ${KERNEL_DIR}
+	cp -r ${HOME}/android_kernel/next_susfs4ksu/kernel_patches/fs ${KERNEL_DIR}
+	cp -r ${HOME}/android_kernel/next_susfs4ksu/kernel_patches/include ${KERNEL_DIR}
+	patch -p1 -F3 -d ${KERNEL_DIR} < ${HOME}/android_kernel/ps_susfs4ksu/kernel_patches/50_add_susfs_in_gki-android14-6.1.patch
+	patch -p1 -d ${KERNEL_DIR} < ${KERNEL_DIR}/fix_susfs.patch
+}
+# 为内核打入sukisu与bakasu专有SuSFS补丁
+sukisu_susfs_patch() {
+	cp -r ${HOME}/android_kernel/sk_susfs4ksu/kernel_patches/fs ${KERNEL_DIR}
+	cp -r ${HOME}/android_kernel/sk_susfs4ksu/kernel_patches/include ${KERNEL_DIR}
 	patch -p1 -F3 -d ${KERNEL_DIR} < ${HOME}/android_kernel/ps_susfs4ksu/kernel_patches/50_add_susfs_in_gki-android14-6.1.patch
 	patch -p1 -d ${KERNEL_DIR} < ${KERNEL_DIR}/fix_susfs.patch
 }
@@ -59,19 +66,28 @@ update_susfs() {
 		git clone https://gitlab.com/simonpunk/susfs4ksu.git -b gki-android14-6.1-dev --depth=1 ${HOME}/android_kernel/susfs4ksu
 	fi
 }
-
-# 下载更新SuSFS补丁
+# 下载更新netx SuSFS补丁
 update_nextsusfs() {
-	if [ -d "${HOME}/android_kernel/ps_susfs4ksu/.git" ]; then
-		cd ${HOME}/android_kernel/ps_susfs4ksu
+	if [ -d "${HOME}/android_kernel/next_susfs4ksu/.git" ]; then
+		cd ${HOME}/android_kernel/next_susfs4ksu
 		git fetch --all
 		git reset --hard origin/gki-android14-6.1-dev
 		git pull
 	else
-		git clone https://gitlab.com/pershoot/susfs4ksu/ -b gki-android14-6.1-dev --depth=1 ${HOME}/android_kernel/ps_susfs4ksu
+		git clone https://gitlab.com/pershoot/susfs4ksu.git -b gki-android14-6.1-dev --depth=1 ${HOME}/android_kernel/next_susfs4ksu
 	fi
 }
-
+# 下载更新sukisu SuSFS补丁
+update_sukisu_susfs() {
+	if [ -d "${HOME}/android_kernel/sk_susfs4ksu/.git" ]; then
+		cd ${HOME}/android_kernel/sk_susfs4ksu
+		git fetch --all
+		git reset --hard origin/gki-android14-6.1-dev
+		git pull
+	else
+		git clone https://github.com/ShirkNeko/susfs4ksu.git -b gki-android14-6.1-dev --depth=1 ${HOME}/android_kernel/sk_susfs4ksu
+	fi
+}
 echo "###############################
 # 1.KernelSU原版
 # 2.KernelSU-Next
@@ -139,7 +155,7 @@ sed -i 's/ -dirty//g' "${KERNEL_DIR}/scripts/setlocalversion"
 
 # 判断并加入KernelSU和SuSFS
 case ${KERNELSU_TAG} in
-	1|3|4)
+	1)
 		[[ "${SUSFS_STAT}" =~ ^[yY]$ ]] && update_susfs && susfs_patch
 		cd ${KERNEL_DIR}
 		[[ "${KERNELSU_TAG}" == "1" ]] && kernelsu_office
@@ -151,6 +167,8 @@ case ${KERNELSU_TAG} in
 		cd ${KERNEL_DIR}
 		kernelsu_next
 		;;
+		3|4)
+		[[ "${SUSFS_STAT}" =~ ^[yY]$ ]] && update_sukisu_susfs && sukisu_susfs_patch
 esac
 
 # 获取KernelSU版本以及加入SuSF默认配置
