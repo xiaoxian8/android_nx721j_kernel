@@ -48,13 +48,6 @@ next_susfs_patch() {
 	patch -p1 -F3 -d ${KERNEL_DIR} < ${HOME}/android_kernel/next_susfs4ksu/kernel_patches/50_add_susfs_in_gki-android14-6.1.patch
 	patch -p1 -d ${KERNEL_DIR} < ${KERNEL_DIR}/fix_susfs.patch
 }
-# 为内核打入sukisu与bakasu专有SuSFS补丁
-sukisu_susfs_patch() {
-	cp -r ${HOME}/android_kernel/sk_susfs4ksu/kernel_patches/fs ${KERNEL_DIR}
-	cp -r ${HOME}/android_kernel/sk_susfs4ksu/kernel_patches/include ${KERNEL_DIR}
-	patch -p1 -F3 -d ${KERNEL_DIR} < ${HOME}/android_kernel/sk_susfs4ksu/kernel_patches/50_add_susfs_in_gki-android14-6.1.patch
-	patch -p1 -d ${KERNEL_DIR} < ${KERNEL_DIR}/fix_susfs.patch
-}
 # 下载更新SuSFS补丁
 update_susfs() {
 	if [ -d "${HOME}/android_kernel/susfs4ksu/.git" ]; then
@@ -78,16 +71,6 @@ update_next_susfs() {
 	fi
 }
 # 下载更新sukisu SuSFS补丁
-update_sukisu_susfs() {
-	if [ -d "${HOME}/android_kernel/sk_susfs4ksu/.git" ]; then
-		cd ${HOME}/android_kernel/sk_susfs4ksu
-		git fetch --all
-		git reset --hard origin/gki-android14-6.1-dev
-		git pull
-	else
-		git clone https://github.com/ShirkNeko/susfs4ksu.git -b gki-android14-6.1-dev --depth=1 ${HOME}/android_kernel/sk_susfs4ksu
-	fi
-}
 echo "###############################
 # 1.KernelSU原版
 # 2.KernelSU-Next
@@ -155,21 +138,17 @@ sed -i 's/ -dirty//g' "${KERNEL_DIR}/scripts/setlocalversion"
 
 # 判断并加入KernelSU和SuSFS
 case ${KERNELSU_TAG} in
-	1)
+	1|3|4)
 		[[ "${SUSFS_STAT}" =~ ^[yY]$ ]] && update_susfs && susfs_patch
 		cd ${KERNEL_DIR}
 		[[ "${KERNELSU_TAG}" == "1" ]] && kernelsu_office
+		[[ "${KERNELSU_TAG}" == "3" ]] && sukisu_ultra
+		[[ "${KERNELSU_TAG}" == "4" ]] && bakasu
 		;;
 		2)
 		[[ "${SUSFS_STAT}" =~ ^[yY]$ ]] && update_next_susfs && next_susfs_patch
 		cd ${KERNEL_DIR}
-		[[ "${KERNELSU_TAG}" == "1" ]] && kernelsu_next
-		;;
-		3|4)
-		[[ "${SUSFS_STAT}" =~ ^[yY]$ ]] && update_sukisu_susfs && sukisu_susfs_patch
-		cd ${KERNEL_DIR}
-		[[ "${KERNELSU_TAG}" == "3" ]] && sukisu_ultra
-		[[ "${KERNELSU_TAG}" == "4" ]] && bakasu
+		[[ "${KERNELSU_TAG}" == "2" ]] && kernelsu_next
 esac
 
 # 获取KernelSU版本以及加入SuSF默认配置
