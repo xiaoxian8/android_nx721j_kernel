@@ -70,7 +70,7 @@ update_next_susfs() {
 		git clone https://gitlab.com/pershoot/susfs4ksu.git -b gki-android14-6.1-dev --depth=1 ${HOME}/android_kernel/next_susfs4ksu
 	fi
 }
-# 下载更新sukisu SuSFS补丁
+
 echo "###############################
 # 1.KernelSU原版
 # 2.KernelSU-Next
