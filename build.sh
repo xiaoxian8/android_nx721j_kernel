@@ -20,18 +20,18 @@ kernelsu_next() {
 	fi
 	KSU_BRANCH="-KernelSU_Next"
 }
-# SukiSU Ultra
-sukisu_ultra() {
+# SukiSU
+sukisu() {
 	if [[ "${SUSFS_STAT}" =~ ^[yY]$ ]]; then
 		curl -LSs "https://raw.githubusercontent.com/SukiSU-Ultra/SukiSU-Ultra/main/kernel/setup.sh" | bash -s builtin
 	else
 		curl -LSs "https://raw.githubusercontent.com/SukiSU-Ultra/SukiSU-Ultra/main/kernel/setup.sh" | bash -s main
 	fi
-	KSU_BRANCH="-SukiSU_Ultra"
+	KSU_BRANCH="-SukiSU"
 }
 # BaKaSU
 bakasu() {
-	curl -LSs "https://raw.githubusercontent.com/Baka-SU/BakaSU/main/kernel/setup.sh" | bash -s sync-up
+	curl -LSs "https://raw.githubusercontent.com/Baka-SU/BakaSU/main/kernel/setup.sh" | bash -s main
 	KSU_BRANCH="-BaKaSU"
 }
 # 为内核打入SuSFS补丁
@@ -142,7 +142,7 @@ case ${KERNELSU_TAG} in
 		[[ "${SUSFS_STAT}" =~ ^[yY]$ ]] && update_susfs && susfs_patch
 		cd ${KERNEL_DIR}
 		[[ "${KERNELSU_TAG}" == "1" ]] && kernelsu_office
-		[[ "${KERNELSU_TAG}" == "3" ]] && sukisu_ultra
+		[[ "${KERNELSU_TAG}" == "3" ]] && sukisu
 		[[ "${KERNELSU_TAG}" == "4" ]] && bakasu
 		;;
 		2)
