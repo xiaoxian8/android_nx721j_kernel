@@ -23,11 +23,11 @@ kernelsu_next() {
 # SukiSU
 sukisu() {
 	if [[ "${SUSFS_STAT}" =~ ^[yY]$ ]]; then
-		curl -LSs "https://raw.githubusercontent.com/SukiSU-Ultra/SukiSU-Ultra/main/kernel/setup.sh" | bash -s builtin
+		curl -LSs "https://raw.githubusercontent.com/SukiSU-Nova/SukiSU-Nova/main/kernel/setup.sh" | bash -s builtin
 	else
-		curl -LSs "https://raw.githubusercontent.com/SukiSU-Ultra/SukiSU-Ultra/main/kernel/setup.sh" | bash -s main
+		curl -LSs "https://raw.githubusercontent.com/SukiSU-Nova/SukiSU-Nova/main/kernel/setup.sh" | bash -s main
 	fi
-	KSU_BRANCH="-SukiSU"
+	KSU_BRANCH="-SukiSU_Nova"
 }
 # BaKaSU
 bakasu() {
@@ -74,7 +74,7 @@ update_next_susfs() {
 echo "###############################
 # 1.KernelSU原版
 # 2.KernelSU-Next
-# 3.SukiSU Ultra
+# 3.SukiSU Nova
 # 4.BaKaSU
 ###############################"
 read -p "请选择你的KernelSU管理器(填数字)：" KERNELSU_TAG
