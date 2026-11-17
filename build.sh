@@ -163,7 +163,7 @@ case ${KERNELSU_TAG} in
 			KSU_VERSION=_$(expr 30000 + $(git rev-list --count remotes/origin/HEAD 2>/dev/null || echo 0))
 		fi
 		if [[ "${KERNELSU_TAG}" == "3" ]]; then
-			KSU_VERSION=_$(expr 40000 - 2815 + $(git rev-list --count remotes/origin/HEAD 2>/dev/null || echo 0))
+			KSU_VERSION=_$(expr 30000 - 4001 + $(git rev-list --count remotes/origin/HEAD 2>/dev/null || echo 0))
 		fi
 		if [[ "${KERNELSU_TAG}" == "4" ]]; then
 			KSU_VERSION=_$(expr 30000 + 700 + $(git rev-list --count remotes/origin/HEAD 2>/dev/null || echo 0))
