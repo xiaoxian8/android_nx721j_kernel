@@ -23,9 +23,9 @@ kernelsu_next() {
 # SukiSU
 sukisu() {
 	if [[ "${SUSFS_STAT}" =~ ^[yY]$ ]]; then
-		curl -LSs "https://raw.githubusercontent.com/SukiSU-Nova/SukiSU-Nova/main/kernel/setup.sh" | bash -s builtin
+		curl -LSs "https://git.zako.shirkneko.top:20004/shirkneko/SukiSU/raw/branch/main/kernel/setup.sh" | bash -s builtin
 	else
-		curl -LSs "https://raw.githubusercontent.com/SukiSU-Nova/SukiSU-Nova/main/kernel/setup.sh" | bash -s main
+		curl -LSs "https://git.zako.shirkneko.top:20004/shirkneko/SukiSU/raw/branch/main/kernel/setup.sh" | bash -s main
 	fi
 	KSU_BRANCH="-SukiSU_Nova"
 }
