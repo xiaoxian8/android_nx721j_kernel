@@ -28,6 +28,8 @@ sukisu() {
 		curl -LSs "https://git.zako.shirkneko.top:20004/shirkneko/SukiSU/raw/branch/main/kernel/setup.sh" | bash -s main
 	fi
 	KSU_BRANCH="-SukiSU_Nova"
+	#修正sukisu版本号对不上
+	sed -i '63s/VERSION_OFFSET[[:space:]]*:=[[:space:]]*4001/VERSION_OFFSET := 996/' $KernelSU/kernel/Makefile
 }
 # BaKaSU
 bakasu() {
