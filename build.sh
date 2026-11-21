@@ -26,7 +26,7 @@ sukisu() {
 		curl -LSs "https://git.zako.shirkneko.top:20004/shirkneko/SukiSU/raw/branch/main/kernel/setup.sh" | bash -s builtin
 		#修正sukisu biultin分支版本号对不上
 		sed -i '63s/VERSION_OFFSET[[:space:]]*:=[[:space:]]*4001/VERSION_OFFSET := 996/' ${KERNEL_DIR}/KernelSU/kernel/Makefile
-		sed -i '83s/\$(LOCAL_COUNT) - \$(VERSION_OFFSET)/$(LOCAL_COUNT) + $(VERSION_OFFSET)/' ${KERNEL_DIR}/KernelSU/kernel/Makefile
+		sed -i '82s/\$(LOCAL_COUNT) - \$(VERSION_OFFSET)/$(LOCAL_COUNT) + $(VERSION_OFFSET)/' ${KERNEL_DIR}/KernelSU/kernel/Makefile
 	else
 		curl -LSs "https://git.zako.shirkneko.top:20004/shirkneko/SukiSU/raw/branch/main/kernel/setup.sh" | bash -s main
 	fi
